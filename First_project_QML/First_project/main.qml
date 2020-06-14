@@ -5,7 +5,7 @@ import QtQuick.Controls 2.12
 
 
 //import related modules
-
+//https://doc.qt.io/qt-5/qmlfirststeps.html
 //window containing the application
 ApplicationWindow {
 
@@ -51,7 +51,8 @@ ApplicationWindow {
     Button {
         text: qsTr("Bouton normal")
         anchors.horizontalCenter:  parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalDown
+//        anchors.verticalCenter: parent.verticalDown
+        // there must be an equivalent but I didn't find it
     }
 
 
@@ -122,6 +123,36 @@ ApplicationWindow {
         Text {
             anchors.centerIn: parent
             text: parent.animatedValue
+        }
+    }
+
+    //////////////REUSE of code ///////////
+
+    Column {
+        width: 180
+        height: 180
+        padding: 1.5
+        topPadding: 10.0
+        bottomPadding: 10.0
+        spacing: 5
+
+        x : parent.width - width
+        anchors.verticalCenter: parent.verticalCenter
+
+
+        MessageLabel{
+            width: parent.width - 2
+            msgType: "debug"
+        }
+        MessageLabel {
+            width: parent.width - 2
+            message: "This is a warning!"
+            msgType: "warning"
+        }
+        MessageLabel {
+            width: parent.width - 2
+            message: "A critical warning!"
+            msgType: "critical"
         }
     }
 
