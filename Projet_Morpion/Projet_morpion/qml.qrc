@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MessageLabel.qml</file>
+        <file>Grid_truc.qml</file>
+    </qresource>
+</RCC>
