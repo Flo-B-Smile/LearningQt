@@ -32,5 +32,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     ../../First_project_QML/First_project/MessageLabel.qml \
-    Grid_truc.qml \
+    Grid.qml \
     main.qml
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../usr/lib/x86_64-linux-gnu/qt5/qml/QtQml/StateMachine/release/ -lqtqmlstatemachine
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../../usr/lib/x86_64-linux-gnu/qt5/qml/QtQml/StateMachine/debug/ -lqtqmlstatemachine
+else:unix: LIBS += -L$$PWD/../../../../../../../usr/lib/x86_64-linux-gnu/qt5/qml/QtQml/StateMachine/ -lqtqmlstatemachine
+
+INCLUDEPATH += $$PWD/../../../../../../../usr/lib/x86_64-linux-gnu/qt5/qml/QtQml/StateMachine
+DEPENDPATH += $$PWD/../../../../../../../usr/lib/x86_64-linux-gnu/qt5/qml/QtQml/StateMachine
