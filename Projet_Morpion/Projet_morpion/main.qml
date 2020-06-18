@@ -53,8 +53,12 @@ Window {
                    signal: button.clicked
                }
                // do something when the state enters/exits
-               onEntered: console.log("s1 entered")
+               onEntered:{
+                   component_lobby.createObject(client1)
+                   console.log("s1 entered")
+               }
                onExited: console.log("s1 exited")
+               // QUESTION: how to delete object ?
            }
 
            DSM.State {
@@ -84,11 +88,47 @@ Window {
                }
 
 
-               onExited: console.log("s3 exited")
+               onExited:{
+//                   component_grid.destroy()
+                   console.log("s3 exited")
+               // QUESTION: How to destroy object?
+               }
            }
        }
 
 
+////////////////////////LOBBY/////////////////
+
+Component{
+    id: component_lobby
+       Rectangle{
+           id: lobby
+           height: parent.height*0.5
+           width: parent.width*0.5
+           color: "grey"
+           anchors.verticalCenter: parent.verticalCenter
+           anchors.horizontalCenter: parent.horizontalCenter
+
+           Text {
+               id: textlobby
+               text: qsTr("Lobby \n Cliquez ici pour vous connecter")
+           }
+
+           Button{
+               text: qsTr("Connexion")
+               anchors.verticalCenter: parent.verticalCenter
+               anchors.horizontalCenter: parent.horizontalCenter
+               onClicked: indicator_busy.visible = true
+           }
+
+           BusyIndicator{
+                id: indicator_busy
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: parent.height -100
+                visible: false
+           }
+       }
+}
 
 
 
@@ -109,8 +149,8 @@ Component{
     id: component_grid
     Rectangle{
         id: rectangle_grid
-        height: parent.height/2
-        width: parent.width/2
+        height: parent.height*0.5
+        width: parent.width*0.5
 //        color: "yellow"
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
@@ -164,7 +204,7 @@ Component{
 
         WebSocket {
             id: socket
-            url: server.url
+            url: "ws://127.0.0.1:35479"
             active: true
             onTextMessageReceived: appendMessage(qsTr("Client received message: %1").arg(message))
             onStatusChanged: {
@@ -188,69 +228,17 @@ Component{
                 text: qsTr("Clique ici pour envoyer un message au serveur")
             }
         }
+
+        Text {
+            id: messageBox
+            text: qsTr("message box here")
+        }
     }
 
-    Window{
-        visible: true
-        width: 640
-        height: 480
-        title: qsTr("Serveur")
 
 
 
 
-        WebSocketServer {
-            id: server
-            listen: true
-            onClientConnected: {
-                webSocket.onTextMessageReceived.connect(function(message) {
-                    appendMessage(qsTr("Server received message: %1").arg(message));
-                    webSocket.sendTextMessage(qsTr("Hello Client!"));
-                });
-            }
-            onErrorStringChanged: {
-                appendMessage(qsTr("Server error: %1").arg(errorString));
-            }
-        }
-
-        TabBar {
-              id: bar
-              width: parent.width
-              TabButton {
-                  text: qsTr("Log")
-                  Text {
-                      id: messageBox
-                      text: qsTr("Click to send a message!")
-
-                      anchors.fill: parent
-
-
-                  }
-              }
-              TabButton {
-                  text: qsTr("Discover")
-              }
-              TabButton {
-                  text: qsTr("Activity")
-              }
-          }
-
-        Button {
-            id: addButton2
-            text: "+"
-            flat: true
-            onClicked: {
-                bar.addItem(barButton.createObject(bar))
-                console.log("added:", bar.itemAt(bar.count - 1))
-            }
-        }
-
-        Component {
-            id: barButton
-            TabButton { text: "TabButton" }
-        }
-
-    }
 
 }
 
