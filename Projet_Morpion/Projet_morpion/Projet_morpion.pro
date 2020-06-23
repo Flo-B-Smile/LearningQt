@@ -32,6 +32,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     ../../First_project_QML/First_project/MessageLabel.qml \
+    Client_struct_test.json \
     Grid.qml \
     main.qml
 
